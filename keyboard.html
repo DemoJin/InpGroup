@@ -1,0 +1,189 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, minimal-ui"/>
+    <meta name="format-detection" content="telephone=no, email=no"/>
+    <title>模拟软键盘</title>
+    <style>
+	    html,body {
+	    	width:100%;
+	    	height:100%;
+	    	max-width:640px;
+	    	margin:0 auto;
+	    	padding:0;
+	    	-webkit-user-select:none;
+	    	-moz-user-select:none;
+	    	-ms-user-select:none;
+	    	user-select:none;
+	    	background:url(https://images.jqcxyz.com/bg/bg_parking.jpg) no-repeat;
+	    	background-size:cover;
+	    	background-position-y:bottom;
+	    	position:relative;
+	    	t-text-size-adjust:none;
+	    	tap-highlight-color:transparent;
+	    	-webkit-tap-highlight-color:transparent;
+	    	-ms-tap-highlight-color:transparent;
+	    	overflow:hidden;
+	    }
+	    input,button {
+	    	-webkit-appearance:none;
+	    	outline:none;
+	    	cursor: pointer;
+	    }
+	    mark{
+	    	background: none;
+	    	color: #999;
+	    }
+	    section {
+	    	padding:20px;
+	    	display: block;
+	    	position:relative;
+	    	z-index:2;
+	    }
+	    section div input {
+	    	display:block;
+	    	width:100%;
+	    	height:42px;
+	    	text-indent:10px;
+	    	margin:20px 0;
+	    	border:1px solid #DEDEDE;
+	    	border-radius:2px;
+	    	font-size:14px;
+	    }
+	    section div input:focus {
+	    	border-color:#4395ff;
+	    }
+	    section button {
+	    	width:100%;
+	    	height:42px;
+	    	line-height:42px;
+	    	color:#fff;
+	    	background:#4395ff;
+	    	font-size:16px;
+	    	border:1px solid #4395ff;
+	    	text-align:center;
+	    	border-radius:2px;
+	    }
+	    table {
+	    	width:100%;
+	    	position:absolute;
+	    	bottom:0;
+	    	z-index:10;
+	    	display:none;
+	    	border-collapse:collapse;
+	    }
+	    table caption {
+	    	cursor:pointer;
+	    	background:#fff;
+	    	height:50px;
+	    	line-height:50px;
+	    	border-top:1px solid #e5e5e5;
+	    	cursor: pointer;
+	    }
+	    table td {
+	    	border:1px solid #e5e5e5;
+	    	width:33%;
+	    	height:50px;
+	    	line-height:50px;
+	    	margin: 0;
+	    	padding: 0;
+	    	background:#fff;
+	    	text-align:center;
+	    	cursor: pointer;
+	    }
+	    table td.gray {
+	    	background:#f8f8f8;
+	    }
+	    table caption:active, table td:active {
+	    	background:#e5e5e5;
+	    }
+    </style>
+</head>
+<body>
+
+	<section class="container">
+        <div>
+            <input placeholder="请输入金额" accesskey="n" type="tel" value="" autocomplete="off" readonly="readonly" onfocus="ShowPress()">
+            <button>确认</button>
+        </div>
+        <br>
+        <mark></mark>
+    </section>
+
+	<table>
+	    <caption>收起</caption>
+		<tr>
+			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+		</tr>
+		<tr>
+			<td>7</td>
+			<td>8</td>
+			<td>9</td>
+		</tr>
+		<tr>
+			<td class="gray">.</td>
+			<td>0</td>
+			<td class="del gray">X</td>
+		</tr>
+	</table> 
+
+	<script>
+
+		var Ocaption = document.querySelector('caption'),
+			Otable = document.querySelector('table'),
+			Otd = Otable.getElementsByTagName('td'),
+		    OBtn = document.querySelector('button'),
+		    OInp = document.querySelector('input'),
+		    OMark = document.querySelector('mark'),
+		    ODel = document.querySelector('.del');
+		
+		Ocaption.onclick = function(){
+			HidePress();
+		}
+
+		for (var i = 0; i < Otd.length; i++) {
+			Otd[i].i = i;     
+			Otd[i].onclick = function(){
+				OInp.focus();
+				OInp.value += this.innerHTML;
+			};
+		}
+
+		ODel.onclick = function(){
+			var OInpVal = OInp.value,
+				OInpLen = OInpVal.length;
+			OInp.focus();
+			OInp.value = OInpVal.substring(0,OInpLen-1);
+		}
+
+		OBtn.onclick = function(){
+			/*(OInp.value.indexOf('.') != '-1' && !OInp.value.split('.')[1])) ? console.log(OInp.value+'0' : console.log(OInp.value);
+			*/
+			if (!OInp.value) {
+				OMark.innerHTML = '';
+				alert('请输入金额！');
+				return false;
+			}
+			OMark.innerHTML = parseFloat(OInp.value);
+		}
+
+		function ShowPress(){
+			Otable.style.display = 'table';
+		}
+
+		function HidePress(){
+			Otable.style.display = 'none';
+		}
+
+	</script>
+
+</body>
+</html>
